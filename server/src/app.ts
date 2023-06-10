@@ -1,6 +1,5 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
-import NoteModel from "./models/note";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import createHttpError, { isHttpError } from "http-errors";
@@ -11,14 +10,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
 
-app.get("/", async (req: Request, res: Response, next) => {
-  try {
-    const notes = await NoteModel.find().exec();
-    res.status(200).json(notes);
-  } catch (error) {
-    next(error);
-  }
-});
+
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(createHttpError(404, "Endpoint not found"));
