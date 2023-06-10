@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import NoteModel from "./models/note";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import createHttpError, { isHttpError } from "http-errors";
 
 const app = express();
 
@@ -20,17 +21,18 @@ app.get("/", async (req: Request, res: Response, next) => {
 });
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  const error = new Error("Not found");
-  res.status(404).json({ error: error.message });
+  next(createHttpError(404, "Endpoint not found"));
 });
 
 app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
   console.error(error);
   let message = "Something went wrong";
-  if (error instanceof Error) {
+  let statusCode = 500;
+  if (isHttpError(error)) {
+    statusCode = error.statusCode;
     message = error.message;
   }
-  res.status(500).json({ error: message });
+  res.status(statusCode).json({ error: message });
 });
 
 export default app;
