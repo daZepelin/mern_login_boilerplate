@@ -19,12 +19,18 @@ app.get("/", async (req: Request, res: Response, next) => {
   }
 });
 
-app.use(
-  (error: unknown, req: Request, res: Response, next: NextFunction) => {
-    console.error(error)
-    const message = "Something went wrong";
-    res.status(500).json({ error: message });
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const error = new Error("Not found");
+  res.status(404).json({ error: error.message });
+});
+
+app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
+  console.error(error);
+  let message = "Something went wrong";
+  if (error instanceof Error) {
+    message = error.message;
   }
-);
+  res.status(500).json({ error: message });
+});
 
 export default app;
