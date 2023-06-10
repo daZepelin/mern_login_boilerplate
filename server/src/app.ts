@@ -3,6 +3,9 @@ import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import createHttpError, { isHttpError } from "http-errors";
+import session from "express-session";
+import env from "./utils/validateEnv";
+import MongooseStore from "connect-mongo";
 
 import userRoutes from "./routes/users";
 
@@ -12,7 +15,20 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
 
-app.use('/api/users', userRoutes)
+app.use(
+  session({
+    secret: env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    store: MongooseStore.create({ mongoUrl: env.MONGO_CONNECTION_STRING }),
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    },
+  })
+);
+
+app.use("/api/users", userRoutes);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(createHttpError(404, "Endpoint not found"));

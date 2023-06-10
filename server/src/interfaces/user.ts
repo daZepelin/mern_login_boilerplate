@@ -3,3 +3,8 @@ export interface IUserSignUpBody {
     email?: string;
     password?: string;
 }
+
+export interface IUserSignUpBody {
+    username?: string;
+    password?: string;
+}

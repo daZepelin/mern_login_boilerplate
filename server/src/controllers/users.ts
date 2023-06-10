@@ -24,14 +24,83 @@ export const signUp: RequestHandler<
     }
 
     const passwordHashed = await bcrypt.hash(passwordRaw, 10);
-    
+
     const user = await UserModel.create({
-        username,
-        email,
-        password: passwordHashed,
+      username,
+      email,
+      password: passwordHashed,
     });
 
+    req.session.userId = user._id;
+
     res.status(201).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const login: RequestHandler<
+  unknown,
+  unknown,
+  IUserSignUpBody,
+  unknown
+> = async (req, res, next) => {
+  const username = req.body.username;
+  const passwordRaw = req.body.password;
+  try {
+    if (!username || !passwordRaw) {
+      throw createHttpError(400, "Missing credentials");
+    }
+
+    const user = await UserModel.findOne({ username })
+      .select("+password")
+      .exec();
+    if (!user) {
+      throw createHttpError(401, "Wrong credentials");
+    }
+
+    const isPasswordValid = await bcrypt.compare(passwordRaw, user.password);
+    if (!isPasswordValid) {
+      throw createHttpError(401, "Wrong credentials");
+    }
+
+    req.session.userId = user._id;
+
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logout: RequestHandler = async (req, res, next) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      res.clearCookie("sid");
+      res.status(200).json({ message: "Logged out" });
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAuthUser: RequestHandler = async (req, res, next) => {
+  const authUserId = req.session.userId;
+
+  try {
+    if (!authUserId) {
+      throw createHttpError(401, "Not authenticated");
+    }
+
+    const user = await UserModel.findById(authUserId).exec();
+    if (!user) {
+      throw createHttpError(401, "Not authenticated");
+    }
+
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
