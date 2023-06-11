@@ -82,22 +82,25 @@ const Register = () => {
           id="register-confirm-password"
           handleChange={handleChange}
         />
-        <Box
-          sx={{
-            fontSize: "x-small",
-            display: "flex",
-            gap: 2,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Box component={"span"}>Already have an account?</Box>
-          <Button size="small" onClick={() => navigate("/login")}>
-            Log In
-          </Button>
-        </Box>
-        <Button type="submit">Register</Button>
+        <Button variant="contained" fullWidth type="submit">
+          Register
+        </Button>
       </form>
+      <Box
+        sx={{
+          fontSize: "x-small",
+          display: "flex",
+          gap: 2,
+          alignItems: "center",
+          justifyContent: "center",
+          mt: 1,
+        }}
+      >
+        <Box component={"span"}>Already have an account?</Box>
+        <Button size="small" onClick={() => navigate("/login")}>
+          Log In
+        </Button>
+      </Box>
     </div>
   );
 };

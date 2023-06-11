@@ -10,6 +10,7 @@ const NavBar = () => {
   return (
     <Box
       sx={{
+        bgcolor: 'primary.light',
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-end",

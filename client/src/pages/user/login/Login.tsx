@@ -3,14 +3,16 @@ import { LoggedInUserCtx } from "../../../context/LoggedInUserCtx";
 import { ILoggedInUser } from "../../../typings/user";
 import { fetchApi } from "../../../utils/fetch";
 import PasswordField from "../../../components/PasswordField";
-import { FormControl, InputLabel, Input, Button } from "@mui/material";
+import { FormControl, InputLabel, Input, Button, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserCtx);
+  const { setLoggedInUser } = useContext(LoggedInUserCtx);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -59,8 +61,25 @@ const Login = () => {
           value={formData.password}
           handleChange={handleChange}
         />
-        <Button type="submit">Log In</Button>
+        <Button variant="contained" fullWidth type="submit">
+          Log In
+        </Button>
       </form>
+      <Box
+        sx={{
+          fontSize: "x-small",
+          display: "flex",
+          gap: 2,
+          alignItems: "center",
+          justifyContent: "center",
+          mt: 1,
+        }}
+      >
+        <Box component={"span"}>Need an account?</Box>
+        <Button size="small" onClick={() => navigate("/register")}>
+          Register
+        </Button>
+      </Box>
     </div>
   );
 };
