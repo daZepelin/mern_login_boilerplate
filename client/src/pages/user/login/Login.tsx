@@ -13,7 +13,6 @@ const Login = () => {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(formData);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,7 +22,6 @@ const Login = () => {
       method: "POST",
       body: formData,
     }).then(({ data }: { data: { user?: ILoggedInUser; error?: string } }) => {
-      console.log(data);
       if (data) {
         setLoggedInUser(data.user);
       }

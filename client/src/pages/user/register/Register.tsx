@@ -18,7 +18,6 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(formData);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
