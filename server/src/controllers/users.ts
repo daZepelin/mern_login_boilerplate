@@ -33,7 +33,9 @@ export const signUp: RequestHandler<
 
     req.session.userId = user._id;
 
-    res.status(201).json(user);
+    res
+      .status(201)
+      .json({ email: user.email, username: user.username, _id: user._id });
   } catch (error) {
     next(error);
   }
