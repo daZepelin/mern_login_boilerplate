@@ -1,5 +1,7 @@
 {
-  "name": "my-app",
+  "name": "mern_login_boilerplate_client",
+  "description": "Frontend for MERN app using TypeScript",
+  "author": "daZepelin",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:5600",
