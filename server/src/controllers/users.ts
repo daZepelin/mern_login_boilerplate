@@ -35,7 +35,9 @@ export const signUp: RequestHandler<
 
     res
       .status(201)
-      .json({ email: user.email, username: user.username, _id: user._id });
+      .json({
+        user: { email: user.email, username: user.username, _id: user._id },
+      });
   } catch (error) {
     next(error);
   }
@@ -68,7 +70,7 @@ export const login: RequestHandler<
 
     req.session.userId = user._id;
 
-    res.status(200).json(user);
+    res.status(200).json({ user });
   } catch (error) {
     next(error);
   }
@@ -102,7 +104,7 @@ export const getAuthUser: RequestHandler = async (req, res, next) => {
       throw createHttpError(401, "Not authenticated");
     }
 
-    res.status(200).json(user);
+    res.status(200).json({ user });
   } catch (error) {
     next(error);
   }

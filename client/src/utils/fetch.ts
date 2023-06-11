@@ -10,7 +10,7 @@ export async function fetchApi<T = any>({
   method?: Method;
   body?: any;
   mockData?: T;
-}): Promise<T> {
+}): Promise<{data: T, resp: Response}> {
   const options = {
     method: method || "POST",
     headers: {
@@ -23,7 +23,7 @@ export async function fetchApi<T = any>({
 
   const resp = await fetch(`${path}`, options);
 
-  const respFormatted = await resp.json();
+  const data = await resp.json();
 
-  return respFormatted;
+  return {data, resp};
 }
