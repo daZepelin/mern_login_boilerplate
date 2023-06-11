@@ -35,7 +35,7 @@ const Register = () => {
       if (e.target.value !== formData.password) {
         setPasswordConfirmError("Passwords do not match");
       } else {
-        setPasswordError(undefined);
+        setPasswordConfirmError(undefined);
       }
     } else if (e.target.name === "password") {
       if (e.target.value.length < 8) {
