@@ -3,11 +3,19 @@ import { LoggedInUserCtx } from "../../../context/LoggedInUserCtx";
 import { ILoggedInUser } from "../../../typings/user";
 import { fetchApi } from "../../../utils/fetch";
 import PasswordField from "../../../components/PasswordField";
-import { FormControl, InputLabel, Input, Button, Box } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  Input,
+  Button,
+  Box,
+  Alert,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { setLoggedInUser } = useContext(LoggedInUserCtx);
+  const [error, setError] = useState<string | undefined>();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -23,15 +31,26 @@ const Login = () => {
       path: "/api/users/login",
       method: "POST",
       body: formData,
-    }).then(({ data }: { data: { user?: ILoggedInUser; error?: string } }) => {
-      if (data) {
-        setLoggedInUser(data.user);
+    }).then(
+      ({
+        data,
+      }: {
+        data: { user?: ILoggedInUser; error?: string };
+        resp: Response;
+      }) => {
+        if (data) {
+          setLoggedInUser(data.user);
+          if (data.error) {
+            setError(data.error);
+          }
+        }
       }
-    });
+    );
   };
 
   return (
     <div>
+      {error && <Alert severity="error">{error}</Alert>}
       <form
         style={{
           display: "flex",

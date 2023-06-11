@@ -1,13 +1,26 @@
 import React, { useContext, useState } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  Input,
+  Alert,
+  InputLabel,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 import { LoggedInUserCtx } from "../../../context/LoggedInUserCtx";
 import { fetchApi } from "../../../utils/fetch";
 import { ILoggedInUser } from "../../../typings/user";
-import { Box, Button, FormControl, Input, InputLabel } from "@mui/material";
 import PasswordField from "../../../components/PasswordField";
-import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const { setLoggedInUser } = useContext(LoggedInUserCtx);
+  const [error, setError] = useState<string | undefined>();
+  const [passwordError, setPasswordError] = useState<string | undefined>();
+  const [passwordConfirmError, setPasswordConfirmError] = useState<
+    string | undefined
+  >();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -18,23 +31,51 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "confirmPassword") {
+      if (e.target.value !== formData.password) {
+        setPasswordConfirmError("Passwords do not match");
+      } else {
+        setPasswordError(undefined);
+      }
+    } else if (e.target.name === "password") {
+      if (e.target.value.length < 8) {
+        setPasswordError("Password must be at least 8 characters long");
+      } else {
+        setPasswordError(undefined);
+      }
+    }
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
     fetchApi({
       path: "/api/users/signup",
       method: "POST",
       body: formData,
-    }).then(({ data }: { data: { user: ILoggedInUser } }) => {
-      if (data) {
-        setLoggedInUser(data.user);
+    }).then(
+      ({
+        data,
+      }: {
+        data: { user: ILoggedInUser; error: string };
+        resp: Response;
+      }) => {
+        if (data) {
+          setLoggedInUser(data.user);
+          if (data.error) {
+            setError(data.error);
+          }
+        }
       }
-    });
+    );
   };
 
   return (
     <div>
+      {error && <Alert severity="error">{error}</Alert>}
       <form
         onSubmit={handleSubmit}
         style={{
@@ -73,6 +114,7 @@ const Register = () => {
           name="password"
           value={formData.password}
           id="register-password"
+          error={passwordError}
           handleChange={handleChange}
         />
         <PasswordField
@@ -80,6 +122,7 @@ const Register = () => {
           name="confirmPassword"
           value={formData.confirmPassword}
           id="register-confirm-password"
+          error={passwordConfirmError}
           handleChange={handleChange}
         />
         <Button variant="contained" fullWidth type="submit">

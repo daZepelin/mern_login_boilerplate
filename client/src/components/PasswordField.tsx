@@ -5,6 +5,7 @@ import {
   Input,
   InputAdornment,
   IconButton,
+  FormHelperText,
 } from "@mui/material";
 import React, { useState } from "react";
 
@@ -13,16 +14,21 @@ interface IProps {
   name: string;
   value: string;
   id: string;
+  error?: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const PasswordField = ({ label, name, value, id, handleChange }: IProps) => {
+const PasswordField = ({ label, name, value, id, error, handleChange }: IProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = () => setShowPassword(!showPassword);
-  
+
   return (
-    <FormControl sx={{ m: 1, width: "25ch" }} variant="standard">
+    <FormControl
+      error={error != null}
+      sx={{ m: 1, width: "25ch" }}
+      variant="standard"
+    >
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <Input
         id={id}
@@ -43,6 +49,9 @@ const PasswordField = ({ label, name, value, id, handleChange }: IProps) => {
           </InputAdornment>
         }
       />
+      <FormHelperText id="password-helper-text">
+        {error}
+      </FormHelperText>
     </FormControl>
   );
 };
