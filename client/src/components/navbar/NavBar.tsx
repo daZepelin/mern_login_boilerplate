@@ -10,12 +10,13 @@ const NavBar = () => {
   return (
     <Box
       sx={{
-        bgcolor: 'primary.light',
+        bgcolor: "primary.light",
+        color: "white",
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-end",
         width: "100%",
-        height: "50px",
+        height: "70px",
         boxSizing: "border-box",
         gap: 3,
         pl: 3,
@@ -25,6 +26,10 @@ const NavBar = () => {
       <Box>{loggedInUser && `Logged in as ${loggedInUser?.username}`}</Box>
       {loggedInUser ? (
         <Button
+          sx={{
+            color: "white",
+          }}
+          variant="contained"
           onClick={() => {
             fetchApi({ path: "/api/users/logout", method: "POST" }).then(() => {
               navigate("/");
@@ -36,8 +41,19 @@ const NavBar = () => {
         </Button>
       ) : (
         <Box sx={{ display: "flex", gap: 2 }}>
-          <Button onClick={() => navigate("/login")}>Log In</Button>
-          <Button onClick={() => navigate("/register")}>Register</Button>
+          <Button
+            sx={{ color: "white" }}
+            onClick={() => navigate("/login")}
+          >
+            Log In
+          </Button>
+          <Button
+            variant="contained"
+            sx={{ color: "white" }}
+            onClick={() => navigate("/register")}
+          >
+            Register
+          </Button>
         </Box>
       )}
     </Box>

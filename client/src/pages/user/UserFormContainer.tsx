@@ -37,7 +37,7 @@ const UserFormContainer = () => {
       >
         <Box
           sx={{
-            background: "rgba(0,0,0,0.1)",
+            bgcolor: "#e3f2fd",
             maxWidth: "500px",
             p: 3,
             height: "fit-content",
