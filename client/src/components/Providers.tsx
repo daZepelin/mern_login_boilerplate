@@ -1,10 +1,14 @@
 import App from "./App";
 import LoggedInUserProvider from "../providers/LoggedInUserProvider";
+import { BrowserRouter } from "react-router-dom";
+import RouterProvider from "../providers/RouterProvider";
 
 const Providers = () => {
   return (
     <LoggedInUserProvider>
-      <App />
+      <RouterProvider>
+        <App />
+      </RouterProvider>
     </LoggedInUserProvider>
   );
 };
