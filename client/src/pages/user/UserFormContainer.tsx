@@ -15,7 +15,7 @@ const UserFormContainer = () => {
       setOpen(true);
     }, 170);
     return () => {};
-  }, [loggedInUser, location]);
+  }, [loggedInUser, location.pathname]);
 
   useEffect(() => {
     if (loggedInUser) {

@@ -75,7 +75,11 @@ const Register = () => {
 
   return (
     <div>
-      {error && <Alert severity="error">{error}</Alert>}
+      {error && (
+        <Alert sx={{ maxWidth: "220px", alignItems: 'center' }} severity="error">
+          {error}
+        </Alert>
+      )}
       <form
         onSubmit={handleSubmit}
         style={{

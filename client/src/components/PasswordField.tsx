@@ -28,6 +28,7 @@ const PasswordField = ({ label, name, value, id, error, handleChange }: IProps) 
       error={error != null}
       sx={{ m: 1, width: "25ch" }}
       variant="standard"
+      fullWidth
     >
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <Input
