@@ -1,0 +1,32 @@
+{
+  "name": "mern_login_boilerplate",
+  "version": "1.0.0",
+  "description": "MERN boilerplate with login handling",
+  "main": "index.js",
+  "scripts": {
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "build": "npm run build:client && npm run build:server",
+    "dev:client": "cd client && npm start",
+    "dev:server": "cd server && npm run dev",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daZepelin/mern_login_boilerplate.git"
+  },
+  "keywords": [
+    "mern",
+    "typescript"
+  ],
+  "author": "daZepelin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daZepelin/mern_login_boilerplate/issues"
+  },
+  "homepage": "https://github.com/daZepelin/mern_login_boilerplate#readme",
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
